@@ -8,9 +8,9 @@ import {
   TooltipArrow,
 } from '@repo/ui/components/tooltip';
 import { createFileRoute, Link } from '@tanstack/react-router';
+import { postsLinkOptions } from '../-validations/posts-link-options';
 import { queryClient } from '@/clients/queryClient';
 import { trpc } from '@/router';
-import { postsLinkOptions } from '@/routes/_protected/posts/-validations/posts-link-options';
 
 export const Route = createFileRoute('/_protected/posts/$postid/')({
   loader: ({ params }) =>
@@ -52,6 +52,9 @@ function RouteComponent() {
     <div className="flex flex-col px-4 w-full max-w-6xl mx-auto break-words">
       <div className="text-center p-5 rounded-2xl">
         <h1 className="text-2xl md:text-4xl font-bold">{post.title}</h1>
+        <div className="inline-block bg-blue-100 text-blue-800 text-sm px-3 py-1 rounded-full mt-2">
+          {post.category}
+        </div>
         <p className="text-sm text-gray-500 mt-2">
           Created by <span className="font-medium">{post.author.name}</span>,{' '}
           {post.createdAt.toLocaleString()}

@@ -11,6 +11,7 @@ const postRouter = router({
       columns: {
         id: true,
         title: true,
+        category: true,
         createdAt: true,
       },
       orderBy: desc(post.createdAt),
@@ -25,6 +26,7 @@ const postRouter = router({
           id: post.id,
           title: post.title,
           content: post.content,
+          category: post.category,
           createdAt: post.createdAt,
           author: {
             id: user.id,

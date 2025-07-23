@@ -1,3 +1,4 @@
+// apps/web/src/features/posts/components/DeletePostButton.tsx (version simplifiée)
 import { Button } from '@repo/ui/components/button';
 import {
   Tooltip,
@@ -7,48 +8,38 @@ import {
   TooltipTrigger,
 } from '@repo/ui/components/tooltip';
 import { cn } from '@repo/ui/lib/utils';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { toast } from 'sonner';
-import type { ReactNode } from '@tanstack/react-router';
-import { trpc } from '@/router';
-import Spinner from '@/routes/-components/common/spinner';
+import type { ReactNode } from 'react';
 
-export default function DeletePostButton({
-  children,
-  className,
-  postId,
-}: Readonly<{
+import { usePostActions } from '../hooks/use-post-actions';
+import { Spinner } from '@/components/ui/spinner';
+
+interface DeletePostButtonProps {
   children: ReactNode;
   className?: string;
   postId: string;
-}>) {
-  const { refetch } = useQuery(trpc.posts.all.queryOptions());
+}
 
-  const deletePostMutation = useMutation(
-    trpc.posts.delete.mutationOptions({
-      onError: (error) => {
-        toast.error(error.message);
-      },
-      onSuccess: async () => {
-        await refetch();
-        toast.info('Post deleted successfully.');
-      },
-    }),
-  );
+export function DeletePostButton({
+  children,
+  className,
+  postId,
+}: DeletePostButtonProps) {
+  const { deletePost, isDeletingPost } = usePostActions();
+
   return (
     <TooltipProvider delayDuration={0}>
       <Tooltip>
         <TooltipTrigger asChild>
           <Button
-            disabled={deletePostMutation.isPending}
+            disabled={isDeletingPost}
             onClick={(e) => {
               e.preventDefault();
-              deletePostMutation.mutate({ id: postId });
+              deletePost({ id: postId });
             }}
             variant="destructive"
             className={cn('h-9 w-10', className)}
           >
-            {deletePostMutation.isPending ? <Spinner /> : children}
+            {isDeletingPost ? <Spinner /> : children}
           </Button>
         </TooltipTrigger>
         <TooltipContent

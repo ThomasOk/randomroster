@@ -6,7 +6,7 @@ import { queryClient } from '@/clients/queryClient';
 import { trpcClient } from '@/clients/trpcClient';
 import { env } from '@/env';
 import { routeTree } from '@/routeTree.gen';
-import Spinner from '@/routes/-components/common/spinner';
+import Spinner from '@/components/ui/spinner';
 
 export const trpc = createTRPCOptionsProxy<AppRouter>({
   client: trpcClient,
